@@ -27,10 +27,11 @@ MPU6050 mpu(Wire);
 unsigned long timer = 0;
 float currentAngle =0;
 float previousAngle =0;
-char direc;
+String direc;
 int angle = 0; 
 // Variables for Encoder
-int currentStateCLK,previousStateCLK, IsMetal, distance = 0, counter = 0 ;
+int currentStateCLK,previousStateCLK, IsMetal, counter = 0 ;
+float distance = 0;
 const float pi = 3.14;
 const float R = 3.25;
 const int N = 40;
@@ -80,7 +81,7 @@ void loop()
       counter ++;
     }
     
-     distance = ((2*pi*R)/N) * counter ;
+     distance = (((2*pi*R)/N) * counter)/100 ;
      Serial.print("Distance : ");
      Serial.println(distance);
 
@@ -107,19 +108,36 @@ void loop()
   }
   // if angle = 0, 90, 180, -90, -180 Start calculating the direction
   // Angle Range [-180,180]
-  if(angle % 90 == 0)
+  if(angle % 90 == 0 ) // To be revised later 
   {
     currentAngle = angle;
-    if(currentAngle > previousAngle)
+    if ( distance >=0.5 && distance <= 2)
     {
-      direc ='L'; // Direction is Left 
-      counter = 0; 
+     if (currentAngle >= -30 && currentAngle <= 30)
+     {
+       direc ="up";
+       counter = 0;
+     }
+     else if(currentAngle <= -150 && currentAngle >= -180)  // To be revised later 
+     {
+       direc ="Down";
+       counter = 0;
+     }
     }
-    else if(currentAngle < previousAngle)
+    if (distance >= 17 && distance <= 20)
     {
-      direc ='R'; // Direction is Right
-      counter = 0;
+      if(currentAngle > previousAngle)
+      {
+        direc ="Left"; // Direction is Left 
+        counter = 0; 
+      }
+      else if(currentAngle < previousAngle)
+      {
+        direc ="Right"; // Direction is Right
+        counter = 0;
+      }
     }
+ 
     previousAngle = currentAngle;
   }
 }
