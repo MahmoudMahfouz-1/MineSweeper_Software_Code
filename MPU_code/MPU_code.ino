@@ -7,7 +7,9 @@
 #include "Wire.h"
 #include <MPU6050_light.h>
 int angle,previousAngle = 0,currentAngle;
-String direc;
+String direc ="0";
+String pDirec = "1";
+String dist ;
 MPU6050 mpu(Wire);
 unsigned long timer = 0;
 
@@ -37,53 +39,57 @@ void loop() {
 	timer = millis();  
   }
   
-  if(angle % 90 == 0 ) // To be revised later 
+  if(angle % 90 == 0) 
   {
      currentAngle = angle;
      previousAngle = previousAngle %360;
      currentAngle = currentAngle %360;
-     if (currentAngle % 360==0)
-     {
-      Serial.println(angle);
-       direc ="Up";
-       Serial.println(direc);
-       //counter = 0;
-     }
-     else if(currentAngle %180 == 0 )  // To be revised later 
-     {
-      Serial.println(angle);
-       direc ="Down";
-       Serial.println(direc);
-       //counter =0;
-     }
-     else if( previousAngle%180==0 && previousAngle!=0)
-     {
+       if (currentAngle % 360==0)
+       {
+        //Serial.println(angle);
+        //if( pDirec != direc)
+          direc ="Up";
+         //counter = 0; 
+       }
        
-       if((previousAngle-currentAngle)%90 ==0  && (previousAngle-currentAngle)< 0)
+       else if(currentAngle %180 == 0 )  
        {
-        Serial.println(angle);
-        direc ="Right"; // Direction is Right
-       // Serial.println(direc);
+        //Serial.println(angle);
+        //if( pDirec != direc)
+          direc ="Down";
+         
+         //Serial.println(direc);
+         //counter =0;
        }
-       else if((previousAngle-currentAngle)%90 ==0 && (previousAngle-currentAngle)>0)
+       else if( previousAngle%180==0 && previousAngle!=0)
        {
-        Serial.println(angle);
-        direc ="Left"; // Direction is Right
-       // Serial.println(direc);
-       }
+       
+           if((previousAngle-currentAngle)%90 ==0  && (previousAngle-currentAngle)< 0)
+           {
+           // Serial.println(angle);
+            if( pDirec != direc)
+              direc ="Right"; // Direction is Right
+           // Serial.println(direc);
+           }
+           else if((previousAngle-currentAngle)%90 ==0 && (previousAngle-currentAngle)>0)
+           {
+            //Serial.println(angle);
+            direc ="Left"; // Direction is Right
+           // Serial.println(direc);
+           }
         
-     }
+        }
     
       else if(currentAngle > previousAngle)
       {
-        Serial.println(angle);
+        //Serial.println(angle);
         direc ="Left"; // Direction is Left 
       //  Serial.println(direc);
         //counter = 0; 
       }
       else if(currentAngle < previousAngle)
       {
-        Serial.println(angle);
+        //Serial.println(angle);
         direc ="Right"; // Direction is Right
         //Serial.println(direc);
         //counter = 0;
@@ -101,9 +107,24 @@ void loop() {
          // Serial.println(direc);
         }
       }
-    Serial.println(direc);
+    
+    //Serial.println(direc);
+    if( pDirec != direc)
+    {
+      dist = direc;
+      Serial.print("Destination: ");
+      Serial.println(dist);
+    }
+   
  
     previousAngle = currentAngle;
+    pDirec = direc;
+    /*
+    Serial.print("Direction : ");
+    Serial.println(direc);
+    Serial.print("Previous Direction : ");
+    Serial.println(pDirec);
+    */
   }
   
 }
