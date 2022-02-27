@@ -20,6 +20,8 @@ void setup() {
 }
 
 void loop() {
+   //   Serial.println("BEGIN");
+
   // Read the current state of inputCLK
   currentStateCLK = digitalRead(inputCLK);
     
@@ -39,6 +41,8 @@ void loop() {
     }
     
      distance = (((2*pi*R)/N) * counter) ;
+     Serial.print("Counter : ");
+     Serial.println(counter);
      Serial.print("Distance : ");
      Serial.println(distance);
 
