@@ -1,4 +1,4 @@
-volatile unsigned long temp, counter=0;
+volatile unsigned long temp =0, counter=0;
 unsigned long distance = 0;
 const float pi = 3.14;
 const float R = 5.7;
@@ -8,7 +8,7 @@ void setup() {
 
   pinMode(2, INPUT_PULLUP); // internal pullup input pin 2 
   
-  pinMode(3, INPUT_PULLUP); // internalเป็น pullup input pin 3
+  pinMode(3, INPUT_PULLUP); // internal pullup input pin 3
 //Setting up interrupt
   //A rising pulse from encodenren activated ai0(). AttachInterrupt 0 is DigitalPin nr 2 on moust Arduino.
   attachInterrupt(0, ai0, RISING);
@@ -17,35 +17,43 @@ void setup() {
   attachInterrupt(1, ai1, RISING);
   }
    
-  void loop() {
+  void loop() 
+  {
   // Send the value of counter
-  if( counter != temp ){
-  Serial.println (counter);
+  if( counter != temp )
+  {
+//  Serial.println (counter);
   temp = counter;
-  distance = (((2*pi*R)/N) * counter)/10 ;
-  
-  
+  distance = (((2*pi*R)/N) * counter)/20 ;
   Serial.print("Distance : ");
-  Serial.println(distance);
+  Serial.print(distance);
+  Serial.println(" cm");
   }
   }
    
   void ai0() {
   // ai0 is activated if DigitalPin nr 2 is going from LOW to HIGH
   // Check pin 3 to determine the direction
-  if(digitalRead(3)==LOW) {
+  if(digitalRead(3)==LOW)
+  {
   counter++;
-  }else{
+  }
+  else
+  {
   counter++;
   }
   }
    
-  void ai1() {
+  void ai1() 
+  {
   // ai0 is activated if DigitalPin nr 3 is going from LOW to HIGH
   // Check with pin 2 to determine the direction
-  if(digitalRead(2)==LOW) {
+  if(digitalRead(2)==LOW) 
+  {
   counter++;
-  }else{
+  }
+  else
+  {
   counter++;
   }
   }
